@@ -1,6 +1,6 @@
 import { controllerFactory } from "../../lib/controllerFactory.js"
 
-const appFactory = () => {
+const terezzu = () => {
   const _modules = {}
 
   const setModules = (modules) => {
@@ -23,4 +23,4 @@ const appFactory = () => {
   }
 }
 
-export { appFactory as terezzu }
+export { terezzu }

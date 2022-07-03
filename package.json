@@ -1,16 +1,15 @@
 {
   "name": "terezzujs",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "Simple Javascript MVC reactive library to create SPA",
   "main": "index.js",
-  "directories": {
-    "src": "src"
-  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
-  "author": "Rodrigo Rocha",
-  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/to-codando/leme-js.git" 
+  },  
   "keywords": [
     "terezzu",
     "terezzu-js",
@@ -22,5 +21,13 @@
     "reactive javascript library terezzujs",
     "reactive javascript terezzujs",
     "reactive terezzujs"
-]  
+  ],   
+  "author": "Rodrigo Rocha",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/to-codando/terezzujs/issues"
+  },
+  "homepage": "https://github.com/to-codando/terezzujs#readme",
+  "dependencies": {}  
+   
 }
