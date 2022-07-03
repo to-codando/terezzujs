@@ -1,0 +1,5 @@
+export { terezzu } from './src/appFactory.js'
+export { controllerFactory } from './src/controllerFactory.js'
+export { viewFactory } from './src/viewFactory.js'
+export { modelFactory } from './src/modelFactory.js'
+export { observerFactory } from './src/observerFactory.js'
