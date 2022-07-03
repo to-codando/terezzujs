@@ -1,4 +1,4 @@
-import { controllerFactory } from "../../lib/controllerFactory.js"
+import { controllerFactory } from "./controllerFactory.js"
 
 export const createApp = () => {
   const _modules = {}

@@ -1,6 +1,6 @@
 {
   "name": "terezzujs",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Simple Javascript MVC reactive library to create SPA",
   "main": "index.js",
   "scripts": {
