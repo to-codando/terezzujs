@@ -1,8 +1,8 @@
 {
-  "name": "terezzuJS",
-  "version": "1.0.0",
+  "name": "terezzujs",
+  "version": "1.0.1",
   "description": "Simple Javascript MVC reactive library to create SPA",
-  "main": "main.js",
+  "main": "index.js",
   "directories": {
     "src": "src"
   },
