@@ -21,7 +21,7 @@ const createApp = () => {
       const module = _main[key]
       const controller = controllerFactory(module.controller())
       controller.setViewModel(module)
-      controller.setChildren({ ...module?.children })
+      controller.setChildren(module)
       controller.init()
     }
 

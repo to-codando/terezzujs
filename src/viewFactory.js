@@ -3,6 +3,7 @@ import { uuid } from './uuid.js'
 
 export const viewFactory = ({ template, events, selector, style = () => {} }) => {
   let _element = null
+  let _children = {}
 
   const _initEvents = ({ events, methods, query }) => {
     for (const key in events) {
@@ -27,7 +28,7 @@ export const viewFactory = ({ template, events, selector, style = () => {} }) =>
     }
   }
 
-  const render = ({ state, methods }) => {
+  const render = ({ state, methods, target, createChild = () => {} }) => {
     const query = _element.querySelector.bind(_element)
     const data = state.get() || {}
     const ctx = _element.getAttribute('mvc')
@@ -36,16 +37,39 @@ export const viewFactory = ({ template, events, selector, style = () => {} }) =>
     _element.innerHTML = applyContext(htmlString, id)
     _initEvents({ element: _element, events, methods, query })
     _bindStyles({ ctx, id, state: data })
+    renderChildren(_element, createChild)
   }
 
-  const bindElement = () => {
-    _element = document.querySelector(selector)
+  const renderChildren = (parentElement, create) => {
+    const elements = getElements(parentElement)
+    elements.forEach(element => {
+      const childId = element.getAttribute('mvc')
+      const childModule = _children[childId]
+      const child = create(childModule)
+      child.init(element)
+      // controller.init()
+    })
   }
 
-  const children = () => {}
+  const getElements = (parentElement) => {
+    const keys = Object.keys(_children)
+    return keys.flatMap(key => {
+      const selector = `[mvc=${key}]`
+      return Array.from(parentElement.querySelectorAll(selector))
+    })
+  }
+
+  const bindElement = (target) => {
+    _element = target || document.querySelector(selector)
+  }
+
+  const setChildren = ({ children = {} }) => {
+    _children = children
+  }
 
   return {
     render,
-    bindElement
+    bindElement,
+    setChildren
   }
 }

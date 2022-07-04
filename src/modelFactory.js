@@ -2,7 +2,7 @@ import { observerFactory } from './observerFactory.js'
 
 export const modelFactory = ({ data = {}, methods = {} }) => {
   const _methods = {}
-  const state = observerFactory({ ...data })
+  const state = observerFactory({ ...JSON.parse(JSON.stringify(data)) })
 
   const bindMethods = () => {
     for (const key in methods) {
@@ -13,7 +13,7 @@ export const modelFactory = ({ data = {}, methods = {} }) => {
   }
 
   return {
-    state,
+    state: { ...state },
     methods: bindMethods()
   }
 }

@@ -5,32 +5,22 @@ export const controllerFactory = (schema) => {
   const _methods = {}
   let _view = null
   let _model = null
-  let _children = {}
 
-  const init = () => {
-    setChildren(schema.children || {})
-    watchChanges()
-    _view.bindElement()
-    _view.render({ ..._model, methods: _methods })
-    bindChildren()
-  }
-  const counter = 0
-  const bindChildren = () => {
-    for (const key in _children) {
-      const module = _children[key]
-      const controller = controllerFactory(module.controller())
-      controller.setViewModel(module)
-      controller.init()
-    }
+  const init = (target) => {
+    watchChanges(target)
+    _view.bindElement(target)
+    _view.render({ ..._model, methods: _methods, createChild, target })
+    setChildren(_view)
   }
 
-  const watchChanges = () => {
+  const watchChanges = (target) => {
     const methods = { ..._methods }
     _model.state.on(data => {
-      _view.render({ ..._model, methods })
-      bindChildren()
+      _view.render({ ..._model, methods, createChild, target })
     })
   }
+
+  const setChildren = (view) => _view.setChildren(schema)
 
   const bindMethods = () => {
     const { methods } = schema
@@ -39,19 +29,22 @@ export const controllerFactory = (schema) => {
     }
   }
 
-  const setChildren = (children) => {
-    _children = children
-  }
-
   const setViewModel = ({ view, model }) => {
     _view = viewFactory({ ...view() })
     _model = modelFactory({ ...model() })
     bindMethods()
   }
 
+  const createChild = (module) => {
+    const controller = controllerFactory({ ...module.controller() })
+    controller.setViewModel({ ...module })
+    return { ...controller }
+  }
+
   return {
-    setChildren,
     setViewModel,
+    setChildren,
+    createChild,
     init
   }
 }
