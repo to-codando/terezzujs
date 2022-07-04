@@ -1,17 +1,16 @@
-import { observerFactory } from "./observerFactory.js"
+import { observerFactory } from './observerFactory.js'
 
 export const modelFactory = ({ data = {}, methods = {} }) => {
-
   const _methods = {}
   const state = observerFactory({ ...data })
 
   const bindMethods = () => {
-    for( let key in methods) {
+    for (const key in methods) {
       _methods[key] = methods[key].bind(null, state)
     }
 
     return _methods
-  }  
+  }
 
   return {
     state,

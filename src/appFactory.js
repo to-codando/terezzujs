@@ -1,24 +1,38 @@
-import { controllerFactory } from "./controllerFactory.js"
+import { controllerFactory } from './controllerFactory.js'
+import { routerFactory } from './routerFactory.js'
 
-export const createApp = () => {
-  const _modules = {}
+const createApp = () => {
+  const _main = {}
+  const _router = {}
 
-  const setModules = (modules) => {
-    Object.assign(_modules, {...modules})
+  const _hasRouter = () => _router.init && typeof _router.init === 'function'
+
+  const setMain = ({ main }) => {
+    Object.assign(_main, { ...main })
+  }
+
+  const setRouter = ({ router }) => {
+    Object.assign(_router, routerFactory(router))
   }
 
   const init = () => {
-    for (let key in _modules) {
-      const module = _modules[key]
+    if (!Object.keys(_main).length) return
+    for (const key in _main) {
+      const module = _main[key]
       const controller = controllerFactory(module.controller())
       controller.setViewModel(module)
-      controller.setChildren({...module?.children})
+      controller.setChildren({ ...module?.children })
       controller.init()
     }
+
+    if (_hasRouter()) _router.init()
   }
 
   return {
-    setModules,
+    setMain,
+    setRouter,
     init
   }
 }
+
+export { createApp }
