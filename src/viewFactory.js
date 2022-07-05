@@ -1,5 +1,6 @@
 import { html, css } from "./tagged.js"
 import { uuid } from "./uuid.js"
+import { domFactory } from "terezzujs/src/domFactory"
 
 export const viewFactory = ({
 	template,
@@ -10,9 +11,10 @@ export const viewFactory = ({
 	let _element = null
 	let _children = {}
 
-	const _initEvents = ({ events, methods, query }) => {
+	const _initEvents = ({ element, events, methods }) => {
+		const dom = domFactory(element)
 		for (const key in events) {
-			events[key]({ methods, query })
+			events[key]({ methods, ...dom })
 		}
 	}
 
@@ -45,13 +47,12 @@ export const viewFactory = ({
 
 
 	const render = ({ state, methods, target, createChild = () => {} }) => {
-		const query = _element.querySelector.bind(_element)
 		const data = state.get() || {}
 		const ctx = _element.getAttribute("mvc")
 		const id = uuid(ctx)
 		const htmlString = template({ html, state: data, methods })
 		_element.innerHTML = applyContext(ctx, htmlString, id)
-		_initEvents({ element: _element, events, methods, query })
+		_initEvents({ element: _element, events, methods })
 		_bindStyles({ ctx, id, state: data })
 		renderChildren(_element, createChild)
 	}
