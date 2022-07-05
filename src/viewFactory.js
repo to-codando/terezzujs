@@ -11,7 +11,7 @@ export const viewFactory = ({ template, events, selector, style = () => {} }) =>
     }
   }
 
-  const applyContext = (text, id) => text.replace(/ctx-/gi, id)
+  const applyContext = (ctx, text, id) => text.replace(/ctx-/gi, `${ctx}-${id}-`)
 
   const hasStyle = (ctx) => {
     const head = document.querySelector('head')
@@ -22,8 +22,8 @@ export const viewFactory = ({ template, events, selector, style = () => {} }) =>
     if (cssString && !hasStyle(ctx)) {
       const styleElement = document.createElement('style')
 
-      styleElement.setAttribute('id', ctx)
-      styleElement.textContent = applyContext(cssString, id)
+      styleElement.setAttribute('id', id)
+      styleElement.textContent = applyContext(ctx, cssString, id)
       document.head.insertAdjacentElement('beforeend', styleElement)
     }
   }
@@ -34,7 +34,7 @@ export const viewFactory = ({ template, events, selector, style = () => {} }) =>
     const ctx = _element.getAttribute('mvc')
     const id = uuid(ctx)
     const htmlString = template({ html, state: data, methods })
-    _element.innerHTML = applyContext(htmlString, id)
+    _element.innerHTML = applyContext(ctx, htmlString, id)
     _initEvents({ element: _element, events, methods, query })
     _bindStyles({ ctx, id, state: data })
     renderChildren(_element, createChild)

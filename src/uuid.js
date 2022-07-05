@@ -3,7 +3,7 @@ const random = () =>
     .toString(16)
     .substring(1)
 
-const uuid = (prefix) =>
-  `${prefix}_${random()}-${random()}_`
+const uuid = () =>
+  `${random()}-${random()}`
 
 export { uuid }
